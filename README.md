@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tiny Arcade
 
-## Getting Started
+Three small browser games built with Next.js, TypeScript, Tailwind CSS and shadcn/ui. No accounts, database or external services. This is an independent repository, beside DocuBot, for testing its documentation and widget onboarding from scratch.
 
-First, run the development server:
+## Run locally
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Requires Node.js 22+ and pnpm.
+
+```sh
+pnpm install
+pnpm dev --port 3100
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3100. Run `pnpm test`, `pnpm lint` and `pnpm build` to check the project.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Games
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Tic-tac-toe
 
-## Learn More
+Two people share the same device. X goes first, then players take turns choosing an empty square. Three matching marks in a row, column or diagonal win. A full board without a winner is a draw. **New round** clears the board and makes X the first player again.
 
-To learn more about Next.js, take a look at the following resources:
+### Memory match
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+There are twelve face-down cards, making six pairs. Click **Start game** to shuffle the deck, then click two cards to reveal them. Matching cards stay face up. A mismatch flips back after 900 milliseconds; wait until then to pick again. Each pair of picks counts as one move. Find all six pairs to win. **Shuffle cards** starts a fresh shuffled board and clears the move count.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Rock, paper, scissors
 
-## Deploy on Vercel
+Choose rock, paper or scissors. The computer chooses randomly each round. Rock beats scissors, scissors beat paper, and paper beats rock. Identical choices are a draw. The score tracks your wins, computer wins and draws until **Reset score** or a page reload.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## State and navigation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The game tabs switch between games. Switching away from a game resets its state. Reloading the page resets all games. There is no saved progress, multiplayer network or server-side game logic.
+
+## Source map
+
+- `src/app/page.tsx`: arcade layout and the three game interfaces.
+- `src/lib/game-logic.ts`: win detection, duel outcomes and card shuffling.
+- `src/components/ui/`: shadcn components.
+- `src/app/globals.css`: global styling.
+- `tests/games.test.mjs`: game rules checks.
+
+## Deployment proposal
+
+Create a GitHub repository named `tiny-arcade` in `Synergy-Shock`, push this repository, then import it into the Vercel **Synergy Shock** team (`synergyshock`). Framework: Next.js. Install: `pnpm install --frozen-lockfile`. Build: `pnpm build`. No environment variables are required. The repository is not linked or deployed yet.
+
+Once deployed, add this repo as a new DocuBot project, generate the wiki, and use its widget setup instructions to integrate the widget. Widget integration is intentionally left for that separate onboarding exercise.
