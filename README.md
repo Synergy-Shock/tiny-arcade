@@ -1,6 +1,6 @@
 # Tiny Arcade
 
-Three small browser games built with Next.js, TypeScript, Tailwind CSS and shadcn/ui. No accounts, database or external services. This is an independent repository, beside DocuBot, for testing its documentation and widget onboarding from scratch.
+Three small browser games built with Next.js, TypeScript, Tailwind CSS and shadcn/ui. No accounts or database. A DocuBot help chat answers questions about the games from the project's documentation wiki. This is an independent repository, beside DocuBot, for testing its documentation and widget onboarding from scratch.
 
 ## Run locally
 
@@ -12,6 +12,14 @@ pnpm dev --port 3100
 ```
 
 Open http://localhost:3100. Run `pnpm test`, `pnpm lint` and `pnpm build` to check the project.
+
+The help chat needs a DocuBot project API token in `.env.local`:
+
+```sh
+DOCUBOT_API_TOKEN=dbk_...
+```
+
+Without it the site still runs; the chat shows "The assistant isn't available right now" and the cause is logged on the server as `[docubot] …`.
 
 ## Games
 
@@ -27,6 +35,10 @@ There are twelve face-down cards, making six pairs. Click **Start game** to shuf
 
 Choose rock, paper or scissors. The computer chooses randomly each round. Rock beats scissors, scissors beat paper, and paper beats rock. Identical choices are a draw. The score tracks your wins, computer wins and draws until **Reset score** or a page reload.
 
+## Help chat
+
+The chat launcher in the corner is the [DocuBot widget](https://www.npmjs.com/package/@synergy-shock/docubot-widget), integrated per https://www.docubot.wiki/docs/api.md (Part A). The widget posts to `/api/docubot`, a route handler re-exported from `@synergy-shock/docubot-widget/server`, which reads `DOCUBOT_API_TOKEN` and relays to DocuBot. The token never reaches the browser. The route is public, so rate-limit it per visitor (for example with a Vercel Firewall rule on `/api/docubot`).
+
 ## State and navigation
 
 The game tabs switch between games. Switching away from a game resets its state. Reloading the page resets all games. There is no saved progress, multiplayer network or server-side game logic.
@@ -37,6 +49,8 @@ The game tabs switch between games. Switching away from a game resets its state.
 - `src/lib/game-logic.ts`: win detection, duel outcomes and card shuffling.
 - `src/components/ui/`: shadcn components.
 - `src/app/globals.css`: global styling.
+- `src/app/layout.tsx`: root layout; renders the DocuBot help chat widget.
+- `src/app/api/docubot/route.ts`: DocuBot relay route. Holds the API token on the server; the widget only talks to this route.
 - `tests/games.test.mjs`: game rules checks.
 
 ## Deployment
@@ -45,6 +59,5 @@ The game tabs switch between games. Switching away from a game resets its state.
 - Production: https://tiny-arcade-nu.vercel.app
 - Vercel team: **Synergy Shock** (`synergyshock`), project `tiny-arcade`.
 - The GitHub repository is connected to Vercel. Pushes to `main` deploy production; pull requests get preview deployments.
-- Framework: Next.js. Build: `pnpm build`. No environment variables are required.
-
-Add this repo as a new DocuBot project, generate the wiki, and use its widget setup instructions to integrate the widget. Widget integration is intentionally left for that separate onboarding exercise.
+- Framework: Next.js. Build: `pnpm build`.
+- Environment variables: `DOCUBOT_API_TOKEN` (Vercel: Project → Settings → Environment Variables). To rotate, create the new token, deploy it, then revoke the old one.
