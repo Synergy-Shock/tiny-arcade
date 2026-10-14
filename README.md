@@ -39,8 +39,12 @@ The game tabs switch between games. Switching away from a game resets its state.
 - `src/app/globals.css`: global styling.
 - `tests/games.test.mjs`: game rules checks.
 
-## Deployment proposal
+## Deployment
 
-Create a GitHub repository named `tiny-arcade` in `Synergy-Shock`, push this repository, then import it into the Vercel **Synergy Shock** team (`synergyshock`). Framework: Next.js. Install: `pnpm install --frozen-lockfile`. Build: `pnpm build`. No environment variables are required. The repository is not linked or deployed yet.
+- GitHub: https://github.com/Synergy-Shock/tiny-arcade (public).
+- Production: https://tiny-arcade-nu.vercel.app
+- Vercel team: **Synergy Shock** (`synergyshock`), project `tiny-arcade`.
+- The GitHub repository is connected to Vercel. Pushes to `main` deploy production; pull requests get preview deployments.
+- Framework: Next.js. Build: `pnpm build`. No environment variables are required.
 
-Once deployed, add this repo as a new DocuBot project, generate the wiki, and use its widget setup instructions to integrate the widget. Widget integration is intentionally left for that separate onboarding exercise.
+Add this repo as a new DocuBot project, generate the wiki, and use its widget setup instructions to integrate the widget. Widget integration is intentionally left for that separate onboarding exercise.
